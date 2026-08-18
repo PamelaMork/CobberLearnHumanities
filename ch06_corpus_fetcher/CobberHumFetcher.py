@@ -693,30 +693,67 @@ class SourceAdapters:
     @staticmethod
     def fetch_loc(query: str, max_results: int) -> ResultPackage:
         url = "https://www.loc.gov/search/"
-        params = {"fo": "json", "q": query, "c": str(max_results)}
-        headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
-        response = requests.get(url, params=params, headers=headers, timeout=REQUEST_TIMEOUT)
-        response.raise_for_status()
-        payload = response.json()
+        headers = {
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json",
+        }
+
+        params = {
+            "fo": "json",
+            "q": query,
+            "c": str(max_results),
+            "sp": "1",
+            "at": "results,pagination",
+        }
+
+        try:
+            response = requests.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=(10, 60),
+            )
+            response.raise_for_status()
+            payload = response.json()
+
+        except requests.Timeout as exc:
+            raise RuntimeError(
+                "The Library of Congress search took too long to respond. "
+                "Please wait a moment and try again."
+            ) from exc
+
+        except requests.RequestException as exc:
+            raise RuntimeError(
+                f"The Library of Congress search could not be completed: {exc}"
+            ) from exc
 
         rows = []
+
         for item in payload.get("results", [])[:max_results]:
             rows.append(
                 {
                     "title": safe_join(item.get("title")),
                     "date": safe_join(item.get("date")),
-                    "creator": safe_join(item.get("contributor") or item.get("creator")),
-                    "type": safe_join(item.get("original_format") or item.get("type") or item.get("format")),
+                    "creator": safe_join(
+                        item.get("contributor") or item.get("creator")
+                    ),
+                    "type": safe_join(
+                        item.get("original_format")
+                        or item.get("type")
+                        or item.get("format")
+                    ),
                     "language": safe_join(item.get("language")),
                     "subjects": safe_join(item.get("subject")),
                     "url": safe_join(item.get("url")),
-                    "description": truncate(safe_join(item.get("description")), 700),
+                    "description": truncate(
+                        safe_join(item.get("description")), 700
+                    ),
                     "source_id": safe_join(item.get("id")),
                     "raw": item,
                 }
             )
 
-        pagination = payload.get("pagination") or {}
+        pagination = payload.get("pagination", {})
         total = pagination.get("total", "unknown")
 
         return ResultPackage(
@@ -730,58 +767,109 @@ class SourceAdapters:
                 "preview_count": len(rows),
                 "preview_requested": max_results,
                 "total_matching": total,
-                "record_types": "Photographs, recordings, documents, maps, and other cataloged materials may appear.",
+                "record_types": (
+                    "Photographs, recordings, documents, maps, and other "
+                    "cultural materials described by the Library of Congress."
+                ),
             },
             export_name=f"loc_{clean_filename(query)}",
         )
+
+
 
     @staticmethod
     def fetch_gutendex(query: str, max_results: int) -> ResultPackage:
         url = "https://gutendex.com/books"
         params = {"search": query}
         headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
-        response = requests.get(url, params=params, headers=headers, timeout=REQUEST_TIMEOUT)
-        response.raise_for_status()
-        payload = response.json()
 
         rows = []
-        for item in payload.get("results", [])[:max_results]:
-            authors = "; ".join(a.get("name", "") for a in item.get("authors", []) if a.get("name"))
-            formats = item.get("formats", {})
-            txt_url = first_format_url(formats, ["text/plain"])
-            html_url = first_format_url(formats, ["text/html"])
-            rows.append(
-                {
-                    "title": safe_join(item.get("title")),
-                    "date": "",
-                    "creator": authors,
-                    "type": "Book",
-                    "language": safe_join(item.get("languages")),
-                    "subjects": safe_join(item.get("subjects")),
-                    "url": html_url or txt_url or f"https://www.gutenberg.org/ebooks/{item.get('id')}",
-                    "description": (
-                        f"Languages: {safe_join(item.get('languages'))}; "
-                        f"Downloads: {item.get('download_count', '')}"
-                    ),
-                    "source_id": str(item.get("id", "")),
-                    "text_url": txt_url,
-                    "raw": item,
-                }
-            )
+        pages = []
+        total = "unknown"
 
-        total = payload.get("count", "unknown")
+        next_url = url
+        next_params = params
+
+        while next_url and len(rows) < max_results:
+            response = requests.get(
+                next_url,
+                params=next_params,
+                headers=headers,
+                timeout=REQUEST_TIMEOUT,
+            )
+            response.raise_for_status()
+            payload = response.json()
+
+            pages.append(payload)
+
+            if total == "unknown":
+                total = payload.get("count", "unknown")
+
+            for item in payload.get("results", []):
+                if len(rows) >= max_results:
+                    break
+
+                authors = "; ".join(
+                    author.get("name", "")
+                    for author in item.get("authors", [])
+                    if author.get("name")
+                )
+
+                formats = item.get("formats", {})
+                txt_url = first_format_url(formats, ["text/plain"])
+                html_url = first_format_url(formats, ["text/html"])
+
+                rows.append(
+                    {
+                        "title": safe_join(item.get("title")),
+                        "date": "",
+                        "creator": authors,
+                        "type": "Book",
+                        "language": safe_join(item.get("languages")),
+                        "subjects": safe_join(item.get("subjects")),
+                        "url": (
+                                html_url
+                                or txt_url
+                                or f"https://www.gutenberg.org/ebooks/{item.get('id')}"
+                        ),
+                        "description": (
+                            f"Languages: {safe_join(item.get('languages'))}; "
+                            f"Downloads: {item.get('download_count', '')}"
+                        ),
+                        "source_id": str(item.get("id", "")),
+                        "text_url": txt_url,
+                        "raw": item,
+                    }
+                )
+
+            next_url = payload.get("next")
+
+            # Gutendex supplies a complete URL in "next", including its
+            # query parameters, so do not send the original params again.
+            next_params = None
+
+        raw_metadata = {
+            "count": total,
+            "records_requested": max_results,
+            "records_fetched": len(rows),
+            "pages_fetched": len(pages),
+            "pages": pages,
+        }
+
         return ResultPackage(
             source="Gutendex / Project Gutenberg",
             query=query,
             fetched_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
             preview_rows=rows,
-            raw_metadata=payload,
+            raw_metadata=raw_metadata,
             total_matching=total,
             summary_details={
                 "preview_count": len(rows),
                 "preview_requested": max_results,
                 "total_matching": total,
-                "record_types": "Public-domain books and book-length works described by Gutendex.",
+                "record_types": (
+                    "Public-domain books and book-length works described by Gutendex."
+                ),
             },
             export_name=f"gutenberg_{clean_filename(query)}",
         )
@@ -1430,7 +1518,7 @@ class CobberHumFetcherApp(QMainWindow):
         form_layout.addWidget(self.query_input)
 
         self.limit_input = QLineEdit()
-        self.limit_input.setValidator(QIntValidator(1, 50, self))
+        self.limit_input.setValidator(QIntValidator(1, 500, self))
         self.limit_input.setText("10")
         self.limit_input.setMaximumWidth(90)
         form_layout.addWidget(bold_label("Preview size:"))
@@ -1691,7 +1779,6 @@ class CobberHumFetcherApp(QMainWindow):
         <p>{html_escape(details.get('record_types'))}</p>
 
         <p><b>Fetched at:</b> {html_escape(result.fetched_at)}</p>
-        <p><i>The preview is a limited set of returned records, not a corpus. Follow promising records back to their sources before deciding what they can contribute to your question.</i></p>
         """
 
     def close_result_tab(self, index: int):
