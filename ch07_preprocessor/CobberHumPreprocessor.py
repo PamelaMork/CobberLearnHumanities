@@ -20,9 +20,9 @@ from __future__ import annotations
 
 import json
 import re
+import string
 import sys
 import unicodedata
-import string
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Callable, Optional
@@ -306,31 +306,31 @@ OPERATIONS = {
         op_remove_stopwords, True,
     ),
     "fix_long_s": OperationSpec(
-        "fix_long_s", "Convert long-s (ſ → s)", "Explore more",
+        "fix_long_s", "Convert long-s (ſ → s)", "Source-specific",
         "Converts the historical long-s character to modern s.",
         "The historical long-s character (ſ), used in some older printing, becomes the modern letter s.",
         op_fix_long_s, True, True,
     ),
     "dehyphenate": OperationSpec(
-        "dehyphenate", "Dehyphenate line breaks", "Explore more",
+        "dehyphenate", "Dehyphenate line breaks", "Source-specific",
         "Rejoins words split by hyphens at line endings.",
         "True hyphenated compounds can be joined incorrectly.",
         op_dehyphenate, True, True,
     ),
     "collapse_spaces": OperationSpec(
-        "collapse_spaces", "Normalize extra spaces", "Explore more",
+        "collapse_spaces", "Normalize extra spaces", "Source-specific",
         "Collapses repeated spaces while preserving line and paragraph boundaries.",
         "Spacing distinctions are reduced; paragraph structure remains.",
         op_collapse_spaces_preserve_paragraphs, True, True,
     ),
     "collapse_all_ws": OperationSpec(
-        "collapse_all_ws", "Collapse all whitespace", "Explore more",
+        "collapse_all_ws", "Collapse all whitespace", "Source-specific",
         "Turns all whitespace, including line and paragraph breaks, into single spaces.",
         "Paragraph structure disappears and paragraph chunking may no longer work.",
         op_collapse_all_whitespace, True, True,
     ),
     "lemmatize": OperationSpec(
-        "lemmatize", "Lemmatization", "Explore more",
+        "lemmatize", "Lemmatization", "Prepare for comparison",
         "Groups related word forms under a shared base form.",
         "Related forms such as walks, walking, and walked may become walk. Historical or unfamiliar language still needs review.",
         op_lemmatize, True, True,
@@ -550,7 +550,6 @@ def launch_gui():
             self.tabs.addTab(self._tab_build(), "Build a Pipeline")
             self.tabs.addTab(self._tab_pipeline(), "Pipeline")
             self.tabs.addTab(self._tab_structure(), "Structure the Text")
-            self.tabs.addTab(self._tab_explore(), "Explore More")
             self.tabs.addTab(self._tab_log(), "Log & Source Return")
             self.setCentralWidget(self.tabs)
 
@@ -661,11 +660,16 @@ def launch_gui():
             ordered_keys = [
                 "lowercase",
                 "remove_stopwords",
+                "lemmatize",
                 "normalize_quotes",
                 "strip_punct",
                 "custom_normalization",
                 "verified_correction",
                 "unicode_nfc",
+                "dehyphenate",
+                "collapse_spaces",
+                "fix_long_s",
+                "collapse_all_ws",
             ]
             self._main_label_to_key = {
                 OPERATIONS[k].label: k for k in ordered_keys
@@ -833,6 +837,26 @@ def launch_gui():
                         "<b>No changes in this excerpt.</b><br>"
                         f"The form <i>{form}</i> was not found in the current accepted version."
                     )
+                if key == "fix_long_s":
+                    return (
+                        "<b>No historical long-s characters were found in this working text.</b>"
+                    )
+                if key == "dehyphenate":
+                    return (
+                        "<b>No line-break hyphenations were found in this working text.</b>"
+                    )
+                if key == "lemmatize":
+                    return (
+                        "<b>Lemmatization did not change any word forms in this working text.</b>"
+                    )
+                if key == "collapse_spaces":
+                    return (
+                        "<b>No extra spaces needed normalization in this working text.</b>"
+                    )
+                if key == "collapse_all_ws":
+                    return (
+                        "<b>No whitespace changes were needed in this working text.</b>"
+                    )
                 return "<b>No changes in this excerpt.</b>"
 
             if key == "lowercase":
@@ -846,8 +870,14 @@ def launch_gui():
                 )
 
             if key == "strip_punct":
-                punct_before = sum(1 for ch in before if ch in string.punctuation or ch in "“”‘’—–…")
-                punct_after = sum(1 for ch in after if ch in string.punctuation or ch in "“”‘’—–…")
+                punct_before = sum(
+                    1 for ch in before
+                    if ch in string.punctuation or ch in "“”‘’—–…"
+                )
+                punct_after = sum(
+                    1 for ch in after
+                    if ch in string.punctuation or ch in "“”‘’—–…"
+                )
                 removed = max(0, punct_before - punct_after)
                 return (
                     f"<b>{removed} punctuation mark(s) removed.</b><br>"
@@ -855,12 +885,25 @@ def launch_gui():
                 )
 
             if key == "remove_stopwords":
-                before_words = re.findall(r"[\\w']+", before, flags=re.UNICODE)
-                after_words = re.findall(r"[\\w']+", after, flags=re.UNICODE)
+                before_words = re.findall(r"[\w']+", before, flags=re.UNICODE)
+                after_words = re.findall(r"[\w']+", after, flags=re.UNICODE)
                 removed = max(0, len(before_words) - len(after_words))
                 return (
                     f"<b>{removed} word(s) removed.</b><br>"
                     "Check whether any removed words carry meaning needed by the research question."
+                )
+
+            if key == "lemmatize":
+                before_words = re.findall(r"\b[\w’'-]+\b", before, flags=re.UNICODE)
+                after_words = re.findall(r"\b[\w’'-]+\b", after, flags=re.UNICODE)
+                changed = sum(
+                    1 for a, b in zip(before_words, after_words)
+                    if a != b
+                ) + abs(len(before_words) - len(after_words))
+                return (
+                    f"<b>{changed} word form(s) changed by lemmatization.</b><br>"
+                    "Inspect the candidate for historical, unfamiliar, or proper-name forms "
+                    "before passing the change forward."
                 )
 
             if key in ("custom_normalization", "verified_correction"):
@@ -898,6 +941,45 @@ def launch_gui():
                     "<b>The digital character representation changed.</b><br>"
                     "The visible wording may look the same even when the underlying "
                     "Unicode representation becomes consistent."
+                )
+
+            if key == "dehyphenate":
+                pattern = re.compile(r"([A-Za-z])-[ \t]*\n[ \t]*([A-Za-z])")
+                changed = len(pattern.findall(before))
+                if changed:
+                    return (
+                        f"<b>{changed} line-break hyphenation(s) joined.</b><br>"
+                        "Check that true hyphenated compounds were not joined accidentally."
+                    )
+                return (
+                    "<b>Line-break hyphenation changed in this working text.</b><br>"
+                    "Compare the candidate before passing the change forward."
+                )
+
+            if key == "collapse_spaces":
+                repeated_runs = re.findall(r"[ \t]{2,}", before)
+                changed_runs = len(repeated_runs)
+                chars_removed = max(0, len(before) - len(after))
+                return (
+                    f"<b>{changed_runs} extra-spacing run(s) normalized "
+                    f"({chars_removed} spacing character(s) removed).</b><br>"
+                    "Paragraph boundaries are preserved."
+                )
+
+            if key == "fix_long_s":
+                changed = before.count("ſ")
+                return (
+                    f"<b>{changed} historical long-s character(s) changed to s.</b><br>"
+                    "The historical typographic distinction is no longer available."
+                )
+
+            if key == "collapse_all_ws":
+                before_runs = len(re.findall(r"\s+", before))
+                after_runs = len(re.findall(r"\s+", after))
+                return (
+                    "<b>Whitespace was collapsed across the text.</b><br>"
+                    f"{before_runs} whitespace run(s) became {after_runs}. "
+                    "Paragraph structure is no longer available."
                 )
 
             delta = len(after) - len(before)
@@ -1362,179 +1444,6 @@ def launch_gui():
                 "ref": self.markup_ref.text().strip(),
             })
             self.markup_out.setPlainText(render_simple_markup(text, self.markup_entities))
-
-        def _tab_explore(self):
-            w = QWidget()
-            lay = QVBoxLayout(w)
-            lay.addWidget(heading("Explore More Preprocessing"))
-            lay.addWidget(info_box(
-                "These techniques are worth recognizing, but they are not part of Mina's main path. "
-                "Try one on the working text and add it to the shared pipeline only if you can justify the choice."
-            ))
-            self.explore_combo = QComboBox()
-            explore_ops = [op for op in OPERATIONS.values() if op.explore_more]
-            self.explore_combo.addItems([op.label for op in explore_ops])
-            self._explore_label_to_key = {op.label: op.key for op in explore_ops}
-            lay.addWidget(self.explore_combo)
-
-            self.explore_desc = QLabel()
-            self.explore_desc.setWordWrap(True)
-            lay.addWidget(self.explore_desc)
-
-            try_btn = colored_button("Try on Working Text", MAROON)
-            try_btn.clicked.connect(self._try_explore)
-            lay.addWidget(try_btn, alignment=Qt.AlignmentFlag.AlignLeft)
-
-            cols = QHBoxLayout()
-            self.explore_before = QPlainTextEdit()
-            self.explore_before.setReadOnly(True)
-            self.explore_after = QPlainTextEdit()
-            self.explore_after.setReadOnly(True)
-            cols.addWidget(self.explore_before)
-            cols.addWidget(self.explore_after)
-            lay.addLayout(cols, 1)
-
-            self.explore_note = info_box("", GOLD, PALE_GOLD)
-            lay.addWidget(self.explore_note)
-
-            row = QHBoxLayout()
-            self.explore_accept = colored_button("Add to Shared Pipeline", MAROON)
-            self.explore_accept.clicked.connect(self._accept_explore)
-            self.explore_discard = colored_button("Discard", MAROON)
-            self.explore_discard.clicked.connect(self._discard_explore)
-            row.addWidget(self.explore_accept)
-            row.addWidget(self.explore_discard)
-            row.addStretch()
-            lay.addLayout(row)
-
-            self.explore_combo.currentTextChanged.connect(self._update_explore_desc)
-            self._explore_candidate = None
-            self._update_explore_desc()
-            self.explore_accept.setEnabled(False)
-            self.explore_discard.setEnabled(False)
-            return w
-
-        def _update_explore_desc(self):
-            if not hasattr(self, "explore_combo"):
-                return
-            key = self._explore_label_to_key[self.explore_combo.currentText()]
-            op = OPERATIONS[key]
-            self.explore_desc.setText(f"<b>{op.description}</b><br>{op.consequence}")
-            self.explore_note.setText(WHY_TRY.get(key, ""))
-
-        def _try_explore(self):
-            if self.working_title is None:
-                QMessageBox.information(
-                    self, "Choose a working text",
-                    "Return to Start Here and choose one of Mina's four excerpts first."
-                )
-                return
-
-            key = self._explore_label_to_key[self.explore_combo.currentText()]
-            op = OPERATIONS[key]
-            step = PipelineStep(key, op.label, {}, op.description, op.information_reducing)
-            before = self.current_text()
-
-            try:
-                after = apply_step(before, step)
-            except RuntimeError as exc:
-                QMessageBox.warning(self, "Preprocessing tool unavailable", str(exc))
-                return
-
-            self._explore_candidate = step
-            self.explore_before.setPlainText(before)
-            self.explore_after.setPlainText(after)
-
-            if key == "fix_long_s":
-                changed = before.count("ſ")
-                detail = (
-                    f"<b>{changed} historical long-s character(s) changed to s.</b>"
-                    if changed
-                    else "<b>No historical long-s characters were found in this working text.</b>"
-                )
-
-            elif key == "dehyphenate":
-                pattern = re.compile(r"([A-Za-z])-[ \t]*\n[ \t]*([A-Za-z])")
-                changed = len(pattern.findall(before))
-                if changed:
-                    detail = f"<b>{changed} line-break hyphenation(s) joined.</b>"
-                elif before != after:
-                    detail = "<b>Line-break hyphenation was changed in this working text.</b>"
-                else:
-                    detail = "<b>No line-break hyphenations were found in this working text.</b>"
-
-            elif key == "lemmatize":
-                before_words = re.findall(r"\b[\w’'-]+\b", before, flags=re.UNICODE)
-                after_words = re.findall(r"\b[\w’'-]+\b", after, flags=re.UNICODE)
-                changed = sum(
-                    1 for a, b in zip(before_words, after_words) if a != b
-                ) + abs(len(before_words) - len(after_words))
-                detail = (
-                    f"<b>{changed} word form(s) changed by lemmatization.</b>"
-                    if changed
-                    else "<b>Lemmatization did not change any word forms in this working text.</b>"
-                )
-
-            elif key == "collapse_spaces":
-                repeated_runs = re.findall(r"[ \t]{2,}", before)
-                changed_runs = len(repeated_runs)
-                if before == after:
-                    detail = "<b>No extra spaces needed normalization in this working text.</b>"
-                else:
-                    chars_removed = max(0, len(before) - len(after))
-                    detail = (
-                        f"<b>{changed_runs} extra-spacing run(s) normalized "
-                        f"({chars_removed} spacing character(s) removed).</b>"
-                    )
-
-            elif key == "collapse_all_ws":
-                if before == after:
-                    detail = "<b>No whitespace changes were needed in this working text.</b>"
-                else:
-                    before_runs = len(re.findall(r"\s+", before))
-                    after_runs = len(re.findall(r"\s+", after))
-                    detail = (
-                        f"<b>Whitespace was collapsed across the text.</b><br>"
-                        f"{before_runs} whitespace run(s) became {after_runs}."
-                    )
-
-            else:
-                if before == after:
-                    detail = "<b>This operation made no visible changes to the working text.</b>"
-                else:
-                    changed = sum(
-                        1 for a, b in zip(before, after) if a != b
-                    ) + abs(len(before) - len(after))
-                    detail = f"<b>About {changed} character position(s) changed.</b>"
-
-            self.explore_note.setText(
-                WHY_TRY.get(key, "")
-                + "<br><br>"
-                + detail
-                + "<br>Compare the two versions before deciding whether to add this step."
-            )
-            self.explore_accept.setEnabled(True)
-            self.explore_discard.setEnabled(True)
-
-        def _accept_explore(self):
-            if self._explore_candidate is None:
-                return
-            self.pipeline.append(self._explore_candidate)
-            self.applied_collection = None
-            self._explore_candidate = None
-            self.explore_before.clear()
-            self.explore_after.clear()
-            self.explore_accept.setEnabled(False)
-            self.explore_discard.setEnabled(False)
-            self._refresh_all()
-
-        def _discard_explore(self):
-            self._explore_candidate = None
-            self.explore_before.clear()
-            self.explore_after.clear()
-            self.explore_note.setText("")
-            self.explore_accept.setEnabled(False)
-            self.explore_discard.setEnabled(False)
 
         def _tab_log(self):
             w = QWidget()
