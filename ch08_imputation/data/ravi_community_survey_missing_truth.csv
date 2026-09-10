@@ -1,0 +1,203 @@
+respondent_id,field,true_value,mechanism,mechanism_basis
+R0005,age,59.0,MCAR,Age values were removed independently of all survey variables.
+R0016,age,18.0,MCAR,Age values were removed independently of all survey variables.
+R0017,age,46.0,MCAR,Age values were removed independently of all survey variables.
+R0028,age,49.0,MCAR,Age values were removed independently of all survey variables.
+R0042,age,27.0,MCAR,Age values were removed independently of all survey variables.
+R0079,age,28.0,MCAR,Age values were removed independently of all survey variables.
+R0161,age,50.0,MCAR,Age values were removed independently of all survey variables.
+R0177,age,44.0,MCAR,Age values were removed independently of all survey variables.
+R0191,age,53.0,MCAR,Age values were removed independently of all survey variables.
+R0220,age,47.0,MCAR,Age values were removed independently of all survey variables.
+R0224,age,45.0,MCAR,Age values were removed independently of all survey variables.
+R0271,age,18.0,MCAR,Age values were removed independently of all survey variables.
+R0285,age,50.0,MCAR,Age values were removed independently of all survey variables.
+R0296,age,38.0,MCAR,Age values were removed independently of all survey variables.
+R0302,age,47.0,MCAR,Age values were removed independently of all survey variables.
+R0311,age,61.0,MCAR,Age values were removed independently of all survey variables.
+R0388,age,41.0,MCAR,Age values were removed independently of all survey variables.
+R0397,age,79.0,MCAR,Age values were removed independently of all survey variables.
+R0426,age,27.0,MCAR,Age values were removed independently of all survey variables.
+R0459,age,39.0,MCAR,Age values were removed independently of all survey variables.
+R0463,age,27.0,MCAR,Age values were removed independently of all survey variables.
+R0483,age,48.0,MCAR,Age values were removed independently of all survey variables.
+R0519,age,59.0,MCAR,Age values were removed independently of all survey variables.
+R0522,age,42.0,MCAR,Age values were removed independently of all survey variables.
+R0012,hourly_wage,22.88,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0021,hourly_wage,11.17,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0023,hourly_wage,25.75,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0027,hourly_wage,10.5,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0040,hourly_wage,23.1,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0054,hourly_wage,33.21,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0058,hourly_wage,30.68,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0060,hourly_wage,26.27,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0064,hourly_wage,10.5,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0068,hourly_wage,22.04,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0074,hourly_wage,19.54,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0076,hourly_wage,27.6,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0080,hourly_wage,23.45,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0085,hourly_wage,32.97,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0113,hourly_wage,19.61,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0122,hourly_wage,20.61,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0123,hourly_wage,25.43,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0136,hourly_wage,29.14,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0153,hourly_wage,25.6,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0155,hourly_wage,23.19,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0156,hourly_wage,22.21,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0159,hourly_wage,30.46,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0165,hourly_wage,32.6,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0175,hourly_wage,25.5,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0181,hourly_wage,30.16,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0197,hourly_wage,20.82,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0200,hourly_wage,20.25,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0213,hourly_wage,29.73,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0232,hourly_wage,25.91,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0240,hourly_wage,22.11,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0241,hourly_wage,41.99,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0251,hourly_wage,21.12,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0253,hourly_wage,33.12,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0268,hourly_wage,30.02,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0277,hourly_wage,23.34,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0283,hourly_wage,25.67,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0284,hourly_wage,26.4,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0295,hourly_wage,27.06,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0316,hourly_wage,24.65,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0327,hourly_wage,17.66,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0331,hourly_wage,10.5,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0337,hourly_wage,23.96,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0347,hourly_wage,24.92,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0348,hourly_wage,20.47,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0351,hourly_wage,21.6,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0352,hourly_wage,18.93,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0355,hourly_wage,31.54,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0356,hourly_wage,24.68,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0360,hourly_wage,16.26,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0374,hourly_wage,24.87,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0375,hourly_wage,17.23,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0376,hourly_wage,30.45,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0389,hourly_wage,29.21,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0413,hourly_wage,25.68,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0414,hourly_wage,24.79,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0427,hourly_wage,34.17,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0436,hourly_wage,15.87,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0438,hourly_wage,28.81,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0440,hourly_wage,13.16,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0442,hourly_wage,21.08,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0445,hourly_wage,19.12,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0454,hourly_wage,18.06,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0458,hourly_wage,29.6,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0466,hourly_wage,26.23,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0468,hourly_wage,22.63,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0491,hourly_wage,25.34,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0496,hourly_wage,28.69,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0505,hourly_wage,22.07,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0523,hourly_wage,21.76,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0529,hourly_wage,21.17,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0535,hourly_wage,27.3,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0541,hourly_wage,19.32,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0543,hourly_wage,22.68,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0560,hourly_wage,24.86,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0565,hourly_wage,23.88,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0587,hourly_wage,20.27,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0590,hourly_wage,26.11,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0594,hourly_wage,36.75,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0596,hourly_wage,23.5,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0597,hourly_wage,27.43,MAR,Missingness depends on observed work_schedule and occupation_group.
+R0003,household_income,72500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0004,household_income,12000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0007,household_income,117500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0014,household_income,103500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0016,household_income,38000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0028,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0037,household_income,33500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0039,household_income,28000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0041,household_income,42000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0042,household_income,57500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0044,household_income,42000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0050,household_income,44000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0055,household_income,58500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0059,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0062,household_income,68500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0064,household_income,53500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0084,household_income,88500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0094,household_income,79500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0096,household_income,46500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0109,household_income,42000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0110,household_income,87000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0119,household_income,46500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0123,household_income,83000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0127,household_income,58500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0134,household_income,26500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0138,household_income,76000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0141,household_income,91000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0160,household_income,78000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0166,household_income,41000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0183,household_income,55500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0195,household_income,76500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0201,household_income,36000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0211,household_income,93500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0216,household_income,32000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0224,household_income,106500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0231,household_income,76500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0233,household_income,12000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0235,household_income,12000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0256,household_income,47000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0258,household_income,43000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0269,household_income,43500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0277,household_income,43000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0278,household_income,54000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0291,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0293,household_income,44000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0295,household_income,69500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0304,household_income,44500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0320,household_income,30500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0322,household_income,20500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0326,household_income,37000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0327,household_income,31500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0336,household_income,56000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0339,household_income,88000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0340,household_income,61500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0342,household_income,87500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0351,household_income,33500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0356,household_income,81500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0359,household_income,61500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0365,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0369,household_income,21000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0370,household_income,35500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0374,household_income,51000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0375,household_income,39000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0394,household_income,44000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0395,household_income,71000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0403,household_income,44000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0412,household_income,56000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0417,household_income,62500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0425,household_income,101000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0427,household_income,123000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0432,household_income,50500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0437,household_income,70000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0441,household_income,67500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0442,household_income,59500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0450,household_income,90500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0451,household_income,58000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0455,household_income,127500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0472,household_income,31500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0479,household_income,35000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0482,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0492,household_income,40500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0497,household_income,65000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0502,household_income,41000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0513,household_income,77000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0514,household_income,43500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0515,household_income,39000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0518,household_income,40000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0526,household_income,60000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0529,household_income,45000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0532,household_income,54500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0543,household_income,78000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0545,household_income,38500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0553,household_income,48500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0555,household_income,102000.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0571,household_income,104500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0585,household_income,58500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0587,household_income,80500.0,MNAR,Lower underlying household incomes are more likely to be missing.
+R0590,household_income,68000.0,MNAR,Lower underlying household incomes are more likely to be missing.
